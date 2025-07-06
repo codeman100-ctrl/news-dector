@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Fake News Detector</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes it mobile responsive -->
+    <link rel="icon" href="{{ url_for('static', filename='logo.png') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #0d1117;
+            color: #e0e0e0;
+        }
+
+        nav {
+            background-color: #1f1f1f;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 0 10px #00ffea80;
+        }
+
+        nav img {
+            height: 35px;
+        }
+
+        nav h1 {
+            color: #00f7ff;
+            font-size: 20px;
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            max-width: 95%;
+            width: 600px;
+            margin: 30px auto;
+            background-color: #161b22;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px #00ffc367;
+        }
+
+        textarea {
+            width: 100%;
+            height: 140px;
+            padding: 10px;
+            background-color: #0d1117;
+            color: #e0e0e0;
+            border: 1px solid #00f7ff;
+            border-radius: 8px;
+            font-size: 1rem;
+            resize: vertical;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 15px;
+            background: #00ffc3;
+            border: none;
+            color: #0d1117;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            box-shadow: 0 0 10px #00ffc3aa;
+        }
+
+        button:hover {
+            background: #00cfa5;
+        }
+
+        .result {
+            margin-top: 25px;
+            font-size: 1rem;
+        }
+
+        .real {
+            color: #00ff6e;
+            font-weight: bold;
+            text-shadow: 0 0 10px #00ff6e88;
+        }
+
+        .fake {
+            color: #ff005c;
+            font-weight: bold;
+            text-shadow: 0 0 10px #ff005c88;
+        }
+
+        .confidence-bar-container {
+            background: #444;
+            border-radius: 10px;
+            height: 25px;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .confidence-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            text-align: right;
+            padding-right: 10px;
+            color: white;
+            font-weight: bold;
+            transition: width 0.3s ease;
+        }
+
+        .feedback-form {
+            margin-top: 20px;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 14px;
+            color: #888;
+            padding-bottom: 20px;
+        }
+
+        @media screen and (max-width: 480px) {
+            nav h1 {
+                font-size: 16px;
+            }
+
+            button {
+                font-size: 0.95rem;
+            }
+
+            textarea {
+                font-size: 0.95rem;
+            }
+
+            .result {
+                font-size: 0.95rem;
+            }
+        }
+
+        .quick-tips-container {
+            font-family: Arial, sans-serif;
+            /* Or your preferred font */
+            background-color: #0f6d55b6;
+            /* Assuming a white background */
+            padding: 20px;
+            border-radius: 8px;
+            /* If it's a separate box, you might add a subtle shadow or border */
+            /* box-shadow: 0 2px 4px rgba(0,0,0,0.1); */
+        }
+
+        .quick-tips-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #f0eaea;
+        }
+
+        .tip-section {
+            margin-bottom: 25px;
+        }
+
+        .tip-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .tip-header .icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .tip-header h3 {
+            font-size: 18px;
+            font-weight: bold;
+            color: #f8eeee;
+            margin: 0;
+        }
+
+        .tip-section ul {
+            list-style-type: none;
+            /* Remove default bullet points */
+            padding-left: 0;
+            margin: 0;
+        }
+
+        .tip-section ul li {
+            font-size: 15px;
+            color: #02c8cf;
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 15px;
+            /* Space for custom bullet */
+        }
+
+        .tip-section ul li::before {
+            content: '\2022';
+            /* Unicode character for a bullet point */
+            color: #2c2121;
+            /* Color of the bullet */
+            font-size: 16px;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .model-status {
+            display: flex;
+            align-items: center;
+            background-color: #123d12;
+            /* Light green background */
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 30px;
+        }
+
+        .model-status .status-icon {
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .model-status .status-text {
+            font-size: 16px;
+            font-weight: bold;
+            color: #3CB371;
+            /* Green text */
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo">
+        <h1>Fake News Detector</h1>
+    </nav>
+
+    <div class="container">
+        <form method="POST">
+            <label for="news"><strong>Paste News Article:</strong></label><br>
+            <!-- <textarea name="news" required>{{ request.form.news }}</textarea><br> -->
+            <textarea name="news" required>{{ user_input if user_input else '' }}</textarea>
+
+            <button type="submit">Check</button>
+        </form>
+
+        {% if prediction %}
+        <div class="result">
+            <p><strong>Prediction:</strong>
+                <span class="{{ 'real' if prediction == 'Real News' else 'fake' }}">
+                    {{ prediction }}
+                </span>
+            </p>
+            <p><strong>Confidence:</strong> {{ confidence }}%</p>
+
+            <div class="confidence-bar-container">
+                <div class="confidence-bar-fill"
+                    style="width: {{ confidence }}%; background: {% if prediction == 'Real News' %}#00ff6e{% else %}#ff005c{% endif %};">
+                    {{ confidence }}%
+                </div>
+            </div>
+
+            <p><strong>Summary:</strong><br>{{ summary }}</p>
+        </div>
+
+        <form method="POST" class="feedback-form">
+            <label><strong>Was this prediction correct?</strong></label><br>
+            <input type="radio" name="feedback" value="yes"> Yes
+            <input type="radio" name="feedback" value="no"> No
+            <input type="hidden" name="news" value="{{ request.form.news }}">
+            <button type="submit">Submit Feedback</button>
+        </form>
+        {% endif %}
+
+        {% if feedback_thank_you %}
+        <p><strong>✅ Thank you for your feedback!</strong></p>
+        {% endif %}
+    </div>
+    <div class="quick-tips-container">
+        <h2 class="quick-tips-title">Quick Tips</h2>
+
+        <div class="tip-section">
+            <div class="tip-header">
+                <span class="icon" style="color: #FF69B4;">&#128150;</span>
+                <h3>For Best Results:</h3>
+            </div>
+            <ul>
+                <li>Use complete articles or substantial text</li>
+                <li>Include headlines and main content</li>
+                <li>Avoid very short snippets</li>
+            </ul>
+        </div>
+
+        <div class="tip-section">
+            <div class="tip-header">
+                <span class="icon" style="color: #FFA500;">&#9888;</span>
+                <h3>Important Notes:</h3>
+            </div>
+            <ul>
+                <li>This tool provides predictions, not absolute truth</li>
+                <li>Always cross-check with reliable sources</li>
+                <li>Consider multiple verification methods</li>
+            </ul>
+        </div>
+
+        <div class="tip-section">
+            <div class="tip-header">
+                <span class="icon" style="color: #6495ED;">&#128200;</span>
+                <h3>Model Performance:</h3>
+            </div>
+            <ul>
+                <li>Trained on diverse news datasets</li>
+                <li>Uses advanced text analysis techniques</li>
+                <li>Continuously improving accuracy</li>
+            </ul>
+        </div>
+
+        <div class="model-status">
+            <span class="status-icon" style="color: #3CB371;">&#9989;</span> <span class="status-text">Model Status:
+                Ready</span>
+        </div>
+    </div>
+    <footer>
+        ⚠️ This model may make mistakes. Please verify important information from trusted sources.
+    </footer>
+
+</body>
+
+</html>
