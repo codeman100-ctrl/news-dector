@@ -5,16 +5,20 @@ from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.lsa import LsaSummarizer
 import csv
 import os
+import nltk
+
+nltk.download('punkt_tab')
 
 
 
 
-# Initialize Flask app
-app = Flask(__name__)
+
 
 # Load the trained model and vectorizer
 model = joblib.load("fake_news_model.pkl")
 vectorizer = joblib.load("tfidf_vectorizer.pkl")
+# Initialize Flask app
+app = Flask(__name__)
 
 # Prediction function
 def predict_news(text):
