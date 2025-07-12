@@ -1,9 +1,16 @@
 Flask==3.1.1
-flask-limiter==3.12
+Flask-Limiter==3.5.0
+gunicorn==22.0.0
+
+# ML and NLP essentials
 scikit-learn==1.4.2
-joblib==1.4.2
 nltk==3.8.1
-langdetect==1.0.9
-requests==2.31.0
-gunicorn==21.2.0
+sumy==0.11.0
+joblib==1.4.2
 pandas==2.2.2
+numpy==1.26.4
+
+# Utilities
+requests==2.31.0
+python-dateutil==2.9.0.post0
+urllib3==2.2.1

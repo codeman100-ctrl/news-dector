@@ -1,34 +1,32 @@
-# Python bytecode and cache
+# Byte-compiled / optimized / DLL files
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
+*.py[cod]
+*$py.class
 
-# Jupyter Notebook checkpoints
-.ipynb_checkpoints/
-
-# Environment folders (big size, NEVER commit)
+# Virtual environment
 .venv/
-venv/
 env/
 ENV/
+venv/
+
+# Python environment
+.Python
+*.env
+*.venv
+*.egg-info/
+
+# VSCode and Jupyter
+.vscode/
+.ipynb_checkpoints/
+
+# Logs and databases
+*.log
+*.sqlite3
 
 # System files
 .DS_Store
 Thumbs.db
 
-# Secrets and config files
-.env
-*.env
-
-# VSCode and PyCharm settings
-.vscode/
-.idea/
-
-# Model or temp files
-*.pkl
-*.joblib
-*.log
-*.sqlite3
-*.db
-tempCodeRunnerFile.py
+# Feedback or generated files
+feedback_data.csv
+"""
