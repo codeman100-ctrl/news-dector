@@ -1,9 +1,9 @@
-Flask==2.3.3
-flask-limiter==3.5.0
+Flask==3.1.1
+flask-limiter==3.12
 scikit-learn==1.4.2
 joblib==1.4.2
 nltk==3.8.1
 langdetect==1.0.9
 requests==2.31.0
 gunicorn==21.2.0
-sumy
+pandas==2.2.2
