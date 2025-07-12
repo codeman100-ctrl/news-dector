@@ -1,0 +1,33 @@
+# Python bytecode and cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Environment folders (big size, NEVER commit)
+.venv/
+venv/
+env/
+ENV/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Secrets and config files
+.env
+*.env
+
+# VSCode and PyCharm settings
+.vscode/
+.idea/
+
+# Model or temp files
+*.pkl
+*.joblib
+*.log
+*.sqlite3
+*.db
