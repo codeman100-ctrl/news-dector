@@ -10,8 +10,7 @@ import requests
 from urllib.parse import quote
 from sentence_transformers import SentenceTransformer, util
 import re
-from datetime import datetime
-from lime.lime_text import LimeTextExplainer
+
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
@@ -236,9 +235,6 @@ def home():
         explanation = get_explanation(user_input, trusted_sources)
         trusted_sources = get_serpapi_results(user_input, serpapi_key="56b1cd4d0e1d17dad526da85b650ccd7fa6eb8caeccc9e0ee89232efb4af65b0")
 
-        # lime_explanation = get_lime_explanation(user_input, model, vectorizer)
-        # full_explanation = explanation + ["--- LIME Explanation ---"] + lime_explanation
-        # lime_html = get_lime_html(user_input, model, vectorizer)
 
 
 
