@@ -274,7 +274,9 @@ def submit_feedback():
     if not all([user_input, prediction, confidence]):
         return "Invalid form submission", 400
 
-    save_feedback(user_input, prediction, float(confidence), was_correct)
+    # save_feedback(user_input, prediction, float(confidence), was_correct)
+    save_feedback(user_input, prediction, float(confidence), was_correct)#why thi error
+    
 
     return redirect("/")  # Or return to index.html with a thank-you flag
 

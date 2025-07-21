@@ -25,6 +25,7 @@
         </form>
 
         {% if prediction %}
+        <h2>This model this may make mistakes refer trusted source also</h2>
         <div class="result">
             <p><strong>Prediction:</strong>
                 <span class="{{ 'real' if prediction == 'Real News' else 'fake' }}">
@@ -170,8 +171,9 @@
     </div>
     <footer>
         ⚠️ This model may occasionally make mistakes. Always verify with trusted sources.<br>
-        Hosted at <a href="https://feka.onrender.com" target="_blank" style="color:#00ffd5;">feka.onrender.com</a>
+        Hosted at <a href="https://feka.world" target="_blank" style="color:#00ffd5;">feka.world</a>
     </footer>
+    <!-- <script src="/static/script.js"></script> -->
 
 </body>
 
