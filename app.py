@@ -234,7 +234,7 @@ def home():
         label, confidence = predict_news(user_input)
         trusted_sources = get_trusted_sources(user_input, "52395907dd394464b923a73e76ffc2d9")
         explanation = get_explanation(user_input, trusted_sources)
-        trusted_sources = get_serpapi_results(user_input, serpapi_key="56b1cd4d0e1d17dad526da85b650ccd7fa6eb8caeccc9e0ee89232efb4af65b0")
+        trusted_sources = get_serpapi_results(user_input, serpapi_key="357e4fcb1c05149083ce8c60c9cc4d9b68e1c0c179dc0518e32ec283a340ddfc")
 
 
 
